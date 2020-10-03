@@ -9,10 +9,11 @@ on:
     branches: [ master ]
     paths:
       - 'frontend/**'
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
@@ -39,15 +40,16 @@ jobs:
     - run: npm test
     - run: npm run build
     - name: Upload build artifact
-      if: github.event == 'push'
+      if: github.event != 'pull_request'
       uses: actions/upload-artifact@v2
       with:
         name: frontend
         path: frontend/build
 
   deploy:
-    if: github.event == 'push'
-    runs-on: ubuntu-20.04
+    if: github.event != 'pull_request'
+    needs: [build]
+    runs-on: ubuntu-latest
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v2
