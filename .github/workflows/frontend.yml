@@ -40,14 +40,14 @@ jobs:
     - run: npm test
     - run: npm run build
     - name: Upload build artifact
-      if: github.event != 'pull_request'
+      if: github.event == 'push' || github.event == 'workflow_dispatch'
       uses: actions/upload-artifact@v2
       with:
         name: frontend
         path: frontend/build
 
   deploy:
-    if: github.event != 'pull_request'
+    if: github.event == 'push' || github.event == 'workflow_dispatch'
     needs: [build]
     runs-on: ubuntu-latest
     steps:
