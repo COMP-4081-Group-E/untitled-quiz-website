@@ -1,0 +1,43 @@
+.footer {
+	position: fixed;
+	bottom:0;
+	height:14%;
+	background-color: #1abc9c;
+	width: 100%;
+	align-content: center;
+  	padding: 1px;
+	left:0;
+}
+a.ex1:hover {
+ 	filter: invert(50%) sepia(97%) saturate(1807%) hue-rotate(176deg) brightness(98%) contrast(93%);
+}
+a.ex2:hover {
+	filter: invert(26%) sepia(65%) saturate(1887%) hue-rotate(256deg) brightness(92%) contrast(92%);
+	}
+a.ex3:hover {
+filter: invert(100%) sepia(10%) saturate(7447%) hue-rotate(133deg) brightness(113%) contrast(50%);
+}
+a.ex4:hover {
+	filter: invert(27%) sepia(100%) saturate(1523%) hue-rotate(177deg) brightness(90%) contrast(89%);
+}
+.twitter {
+	height: 100px;
+	width: 100px;
+}
+.linkedIn {
+	height:75px;
+	width: 75px;
+	padding-bottom: 14px;
+}
+.instagram {
+	height:75px;
+	width: 75px;
+	padding-bottom:13px;
+	padding-left: 15px;
+}
+.gitHub {
+	height: 75px;
+	width: 75px;
+	padding-bottom:14px;
+	padding-left: 15px;
+}
