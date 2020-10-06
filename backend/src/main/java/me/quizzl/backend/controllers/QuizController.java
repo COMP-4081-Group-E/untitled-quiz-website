@@ -1,17 +1,17 @@
 // basic beginnings of an API
-package com.GroupE.QuizWebsite.quiz.API;
+package me.quizzl.backend.controllers;
 
-import com.GroupE.QuizWebsite.quiz.model.Quiz;
-import com.GroupE.QuizWebsite.quiz.service.QuizService;
+import me.quizzl.backend.models.Quiz;
+import me.quizzl.backend.services.QuizService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("api/backend")
+@RequestMapping("api/quiz")
 @RestController
 public class QuizController {
-
     private QuizService quizService;
 
     @Autowired
@@ -21,7 +21,7 @@ public class QuizController {
 
     @PostMapping
     public void addQuiz(@RequestBody Quiz quiz){
-        quizService.addQuiz(quiz);
+        quizService.addQuiz();
     }
 
     @GetMapping
