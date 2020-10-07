@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "react": "./react.js",
+    "react-dom": "./react-dom.js",
+    "react-hook-form": "./react-hook-form.js",
+    "react-router-dom": "./react-router-dom.js"
+  }
+}

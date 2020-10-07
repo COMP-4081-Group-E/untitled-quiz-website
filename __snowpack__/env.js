@@ -1,0 +1,1 @@
+export default {"SNOWPACK_PUBLIC_API_URL":"https://group-e-quiz-backend.herokuapp.com/","MODE":"production","NODE_ENV":"production"};
