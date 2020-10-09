@@ -1,4 +1,7 @@
 {
   "extends": "@snowpack/app-scripts-react",
+  "installOptions": {
+    "namedExports": ["react-loading-skeleton"]
+  },
   "plugins": []
 }
