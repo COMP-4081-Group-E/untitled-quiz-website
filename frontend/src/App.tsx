@@ -16,7 +16,9 @@ const App = ({}: AppProps) => {
         <CreateQuizPage />
       </Route>
       <Route path='/quiz/:id'>
-        <TakeQuizPage />
+        {({match}) => (
+          <TakeQuizPage id={match?.params.id} />
+        )}
       </Route>
     </Switch>
   );
