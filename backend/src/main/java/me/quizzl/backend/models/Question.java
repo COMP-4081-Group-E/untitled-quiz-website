@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 public class Question {
     
     @Column(name = "question_string")
-    private String questionStr;
+    public String questionStr;
     @Column(name = "correct_answer")
-    private String correctAnswer;
+    public String correctAnswer;
 
     public Question(String questionStr, String correctAnswer) {
         this.questionStr = questionStr;
