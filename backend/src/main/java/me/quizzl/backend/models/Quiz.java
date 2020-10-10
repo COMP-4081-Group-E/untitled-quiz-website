@@ -1,7 +1,7 @@
 // class for the quizzes that will connect to a databasse
 package me.quizzl.backend.models;
 
-import java.util.UUID;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +25,39 @@ public class Quiz {
      */
     private UUID id;
 
+    @Column(name = "quiz_questions")
+    private List<Question> questionList;
+    
+    // Constructor
+    public Quiz(List<Question> questionList) {
+        this.questionList = questionList;
+    }
+    // Getters
     public UUID getQuizId() {
-        return id;
+        return this.id;
+    }
+    public List getQuestion() {
+        return this.questionList;
+    }
+    // Setters
+    public void setQuestions(List<Question> questionList) {
+        this.questionList = questionList;
+    }
+    public void addQuestion(Question question) {
+        this.questionList.add(question);
+    }
+
+    // Possible functionality added in the future for editing quizzes
+    /*public void removeQuestion(Question question) {
+
+    }*/
+
+    @Override
+    public String toString() {
+        for(int i = 0; i > this.questionList.size(); i++) {
+            System.out.println(this.questionList.get(i).toString());
+        }
+
+        return("Quiz ID: " + this.id);
     }
 }
