@@ -23,20 +23,24 @@ public class Quiz {
      */
     private UUID id;
 
-    @ElementCollection
     private List<Question> questionList;
+    private String quizTitle;
     
     // Constructor
     public Quiz() {
     }
-    public Quiz(List<Question> questionList) {
+    public Quiz(List<Question> questionList, String quizTitle) {
         this.questionList = questionList;
+        this.quizTitle = quizTitle;
     }
     // Getters
     public UUID getQuizId() {
         return this.id;
     }
-    public List<Question> getQuestion() {
+    public String getQuizTitle() {
+        return this.quizTitle;
+    }
+    public List<Question> getQuestions() {
         return this.questionList;
     }
     // Setters

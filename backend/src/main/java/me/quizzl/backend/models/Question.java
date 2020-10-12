@@ -1,10 +1,9 @@
 package me.quizzl.backend.models;
-import javax.persistence.Embeddable;
-
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Column;
 
 // Base question class that other question types will inherit from (e.g. MultipleChoice, TrueFalse, ShortAnswer, etc.)
-@Embeddable
+@MappedSuperclass
 public class Question {
     
     @Column(name = "question_string")
@@ -12,6 +11,9 @@ public class Question {
     @Column(name = "correct_answer")
     public String correctAnswer;
 
+    public Question() {
+
+    }
     public Question(String questionStr, String correctAnswer) {
         this.questionStr = questionStr;
         this.correctAnswer = correctAnswer;
