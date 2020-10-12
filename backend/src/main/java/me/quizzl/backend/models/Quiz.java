@@ -29,6 +29,8 @@ public class Quiz {
     private List<Question> questionList;
     
     // Constructor
+    public Quiz() {
+    }
     public Quiz(List<Question> questionList) {
         this.questionList = questionList;
     }
