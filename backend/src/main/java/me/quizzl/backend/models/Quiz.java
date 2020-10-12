@@ -22,9 +22,10 @@ public class Quiz {
      * This value is automatically generated when a quiz entity is saved to the database.
      */
     private UUID id;
-
-    private List<Question> questionList;
     private String quizTitle;
+
+    @ElementCollection
+    private List<Question> questionList;
     
     // Constructor
     public Quiz() {
@@ -49,6 +50,9 @@ public class Quiz {
     }
     public void addQuestion(Question question) {
         this.questionList.add(question);
+    }
+    public void setTitle(String quizTitle) {
+        this.quizTitle = quizTitle;
     }
 
     // Possible functionality added in the future for editing quizzes
