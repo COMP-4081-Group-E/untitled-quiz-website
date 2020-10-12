@@ -24,7 +24,7 @@ public class Quiz {
     private UUID id;
     private String quizTitle;
 
-    @ElementCollection
+    @ElementCollection(targetClass=Question.class)
     private List<Question> questionList;
     
     // Constructor

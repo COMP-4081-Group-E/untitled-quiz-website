@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name="id", updatable = false, nullable = false)
     protected Long id;
 
 
