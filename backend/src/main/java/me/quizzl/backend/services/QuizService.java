@@ -2,13 +2,12 @@
 package me.quizzl.backend.services;
 
 import me.quizzl.backend.models.Quiz;
-import me.quizzl.backend.models.Question;
 import me.quizzl.backend.repositories.QuizRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class QuizService {

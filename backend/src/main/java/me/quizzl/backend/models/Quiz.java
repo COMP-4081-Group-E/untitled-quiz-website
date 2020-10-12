@@ -1,7 +1,8 @@
 // class for the quizzes that will connect to a databasse
 package me.quizzl.backend.models;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +39,7 @@ public class Quiz {
     public UUID getQuizId() {
         return this.id;
     }
-    public List getQuestion() {
+    public List<Question> getQuestion() {
         return this.questionList;
     }
     // Setters
@@ -52,7 +53,7 @@ public class Quiz {
     // Possible functionality added in the future for editing quizzes
     /*public void removeQuestion(Question question) {
 
-    }*/
+    } */
 
     @Override
     public String toString() {
