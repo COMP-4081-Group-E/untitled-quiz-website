@@ -1,10 +1,10 @@
 package me.quizzl.backend.models;
+import javax.persistence.Embeddable;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 
 // Base question class that other question types will inherit from (e.g. MultipleChoice, TrueFalse, ShortAnswer, etc.)
-@Entity
+@Embeddable
 public class Question {
     
     @Column(name = "question_string")

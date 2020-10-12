@@ -4,10 +4,7 @@ package me.quizzl.backend.models;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,7 +23,7 @@ public class Quiz {
      */
     private UUID id;
 
-    @Column(name = "quiz_questions")
+    @Embedded
     private List<Question> questionList;
     
     // Constructor
