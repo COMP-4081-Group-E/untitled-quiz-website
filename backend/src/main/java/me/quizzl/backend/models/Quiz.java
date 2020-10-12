@@ -24,7 +24,7 @@ public class Quiz {
     private UUID id;
     private String quizTitle;
 
-    @ElementCollection(targetClass=Question.class)
+    @OneToMany(targetEntity = Question.class, mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<Question> questionList;
     
     // Constructor
