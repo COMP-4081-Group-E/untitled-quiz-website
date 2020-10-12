@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 public class MultipleChoice extends Question{
     
     @Column(name = "incorrect_answers")
-    String[] incorrectAnswers;
+    private String[] incorrectAnswers;
     
     public MultipleChoice() {
 

@@ -1,15 +1,25 @@
 package me.quizzl.backend.models;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+
 
 // Base question class that other question types will inherit from (e.g. MultipleChoice, TrueFalse, ShortAnswer, etc.)
 @MappedSuperclass
 public class Question {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
+    protected Long id;
+
+
     @Column(name = "question_string")
-    public String questionStr;
+    protected String questionStr;
     @Column(name = "correct_answer")
-    public String correctAnswer;
+    protected String correctAnswer;
 
     public Question() {
 
