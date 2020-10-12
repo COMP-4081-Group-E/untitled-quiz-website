@@ -23,7 +23,7 @@ public class Quiz {
      */
     private UUID id;
 
-    @Embedded
+    @ElementCollection
     private List<Question> questionList;
     
     // Constructor
