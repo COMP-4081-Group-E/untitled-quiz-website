@@ -1,9 +1,9 @@
 package me.quizzl.backend.models;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 
-@Entity
+@Embeddable
 public class MultipleChoice extends Question{
     
     @Column(name = "incorrect_answers")
