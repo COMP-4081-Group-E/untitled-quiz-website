@@ -3,7 +3,7 @@ package me.quizzl.backend.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity(name = "MultipleChoice")
+@Entity
 public class MultipleChoice extends Question{
     
     @Column(name = "incorrect_answers")
