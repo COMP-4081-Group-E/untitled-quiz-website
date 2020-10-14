@@ -19,7 +19,7 @@ const CreateQuizPage = () => {
   const createQuiz = async () => {
     const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz`, {
       method: 'POST',
-      body: JSON.stringify(questions)
+      body: JSON.stringify({ title, questions })
     });
 
     if (!res.ok) {
