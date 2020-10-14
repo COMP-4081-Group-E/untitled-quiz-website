@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class QuizService {
@@ -17,6 +18,10 @@ public class QuizService {
     public Quiz addQuiz() {
         var quiz = new Quiz();
         return quizRepository.save(quiz);
+    }
+
+    public Quiz getQuizByID(UUID id){
+        return quizRepository.getOne(id);
     }
 
     public List<Quiz> getQuizzes() {

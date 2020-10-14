@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("api/quiz")
 @RestController
@@ -27,5 +28,10 @@ public class QuizController {
     @GetMapping
     public List<Quiz> getQuizzes(){
         return quizService.getQuizzes();
+    }
+
+    @GetMapping("/{id}")
+    public Quiz getQuiz(@PathVariable String id){
+        return quizService.getQuizByID(UUID.fromString(id));
     }
 }
