@@ -1,22 +1,20 @@
 package me.quizzl.backend.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 
 // Base question class that other question types will inherit from (e.g. MultipleChoice, TrueFalse, ShortAnswer, etc.)
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", updatable = false, nullable = false)
-    protected Long id;
+public abstract class Question {
 
+    @ManyToOne
+    @JoinColumn(name="quiz_id", nullable = false)
+    protected Quiz quiz;
 
     @Column(name = "question_string")
     protected String questionStr;

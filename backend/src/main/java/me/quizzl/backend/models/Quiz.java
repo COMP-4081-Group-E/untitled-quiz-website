@@ -24,7 +24,7 @@ public class Quiz {
     private UUID id;
     private String quizTitle;
 
-    @ElementCollection
+    @OneToMany(mappedBy = "quiz")
     private List<Question> questionList;
     
     // Constructor
