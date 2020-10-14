@@ -1,7 +1,10 @@
 package me.quizzl.backend.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,10 +14,15 @@ import javax.persistence.ManyToOne;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Question {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id", updatable = false, nullable = false)
+    protected Long id;
 
     @ManyToOne
     @JoinColumn(name="quiz_id", nullable = false)
     protected Quiz quiz;
+
 
     @Column(name = "question_string")
     protected String questionStr;
