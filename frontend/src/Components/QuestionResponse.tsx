@@ -7,7 +7,7 @@ interface QuestionProps {
   answers?: string[]
 }
 
-const Question: React.FunctionComponent<QuestionProps> = ({ id, title, answers }) => {
+const QuestionResponse: React.FunctionComponent<QuestionProps> = ({ id, title, answers }) => {
   return (
     <div>
       <h2>{title ?? <Skeleton />}</h2>
@@ -21,4 +21,4 @@ const Question: React.FunctionComponent<QuestionProps> = ({ id, title, answers }
   );
 };
 
-export default Question;
+export default QuestionResponse;

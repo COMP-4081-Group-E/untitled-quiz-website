@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import Question from '../Components/Question';
+import type { Quiz } from '../models/quiz';
+import QuestionResponse from '../Components/QuestionResponse';
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
-
-interface Question {
-  id: any,
-  title: string,
-  answers: string[] // don't send the client the correct answers, to prevent cheating
-}
-interface Quiz {
-  title?: string,
-  questions: Question[]
-}
 
 const loadQuiz = async (id: any): Promise<Quiz> => {
   // todo: don't hardcode quiz
@@ -22,25 +13,21 @@ const loadQuiz = async (id: any): Promise<Quiz> => {
     title: 'A sample quiz',
     questions: [
       {
-        id: 1,
-        title: 'What color is the sky?',
-        answers: [
-          'Yellow',
-          'Red',
-          'Blue',
-          'Green'
-        ]
+        questionStr: 'How many fingers am I holding up?',
+        // todo: send client array of answers so cheating isn't easy
+        correctAnswer: '3',
+        incorrectAnswer: '11',
+        incorrectAnswer2: '0',
+        incorrectAnswer3: 'do thumbs count'
       },
       {
-        id: 2,
-        title: 'How many fingers am I holding up?',
-        answers: [
-          '3',
-          '11',
-          '0',
-          'do thumbs count'
-        ]
-      }
+        questionStr: 'What color is the sky?',
+        // todo: send client array of answers so cheating isn't easy
+        correctAnswer: 'Yellow',
+        incorrectAnswer: 'Red',
+        incorrectAnswer2: 'Blue',
+        incorrectAnswer3: 'Green'
+      },
     ]
   };
 };
@@ -63,7 +50,12 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
     <main>
       <h1>{quiz.title ?? <Skeleton />}</h1>
       {quiz.questions.map(question => (
-        <Question {...question} />
+        <QuestionResponse title={question.questionStr} answers={[
+          question.correctAnswer,
+          question.incorrectAnswer,
+          question.incorrectAnswer2,
+          question.incorrectAnswer3
+        ]} />
       ))}
       <button onClick={submitAnswers}>Submit Answers</button>
     </main>

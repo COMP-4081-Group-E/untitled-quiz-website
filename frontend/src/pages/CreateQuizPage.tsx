@@ -1,11 +1,17 @@
 import React, { useState } from "react"
+import type { Question } from "../models/question";
 import Footer from "../Components/Footer";
-import QuestionForm, { Question } from "../Components/QuestionForm";
+import QuestionForm from "../Components/QuestionForm";
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
 const CreateQuizPage = () => {
+  const [title, setTitle] = useState<string>();
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  const updateTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
   const addQuestion = (question: Question) => {
     setQuestions([...questions, question]);
   };
@@ -27,11 +33,16 @@ const CreateQuizPage = () => {
   };
 
   return (
-    <React.Fragment>
+    <main>
+      <h1>Create a Quiz</h1>
+      <label>
+        Title:
+        <input type='text' onChange={updateTitle} />
+      </label>
       <QuestionForm questionNumber={questions.length + 1} callback={addQuestion} />
       <button onClick={createQuiz}>Create Quiz</button>
       <Footer/>
-    </ React.Fragment >
+    </main>
   )
 }
 export default CreateQuizPage
