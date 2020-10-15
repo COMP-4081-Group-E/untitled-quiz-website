@@ -1,22 +1,7 @@
 import React from "react"
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import type { Question } from "../models/question";
 import styles from './QuestionForm.module.css';
-
-type Inputs = {
-  questionStr: string,
-  correctAnswer: string,
-  incorrectAnswer: string,
-  incorrectAnswer2: string,
-  incorrectAnswer3: string
-};
-
-export interface Question {
-  questionStr: string,
-  correctAnswer: string,
-  incorrectAnswer: string,
-  incorrectAnswer2: string,
-  incorrectAnswer3: string
-}
 
 interface QuestionFormProps {
   callback: (question: Question) => (void | Promise<void>);
@@ -24,22 +9,34 @@ interface QuestionFormProps {
 }
 
 const QuestionForm: React.FunctionComponent<QuestionFormProps> = ({ callback, questionNumber }) => {
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit, reset } = useForm<Question>();
+  const onSubmit: SubmitHandler<Question> = (question: Question) => {
+    callback(question);
+    reset();
+  };
 
   return (
-    <form className = {styles.input} onSubmit={handleSubmit(callback)}>
-      <h1>Create a Quiz</h1>
-      <label >Question {questionNumber}:</label>
-      <input type= "text" name="questionStr" ref={register} />
-      <label >Correct Answer:</label>
-      <input type= "text" name="correctAnswer" ref={register} />
-      <label >Incorrect Answer</label>
-      <input type= "text" name="incorrectAnswer" ref={register} />
-      <label >Incorrect Answer</label>
-      <input type= "text" name="incorrectAnswer2" ref={register} />
-      <label >Incorrect Answer</label>
-      <input type= "text" name="incorrectAnswer3" ref={register} />
-
+    <form className={styles.input} onSubmit={handleSubmit(onSubmit)}>
+      <label>
+        Question {questionNumber}:
+        <input type="text" name="questionStr" ref={register} />
+      </label>
+      <label>
+        Correct Answer:
+        <input type="text" name="correctAnswer" ref={register} />
+      </label>
+      <label>
+        Incorrect Answer
+        <input type="text" name="incorrectAnswer" ref={register} />
+      </label>
+      <label>
+        Incorrect Answer
+        <input type="text" name="incorrectAnswer2" ref={register} />
+      </label>
+      <label>
+        Incorrect Answer
+        <input type="text" name="incorrectAnswer3" ref={register} />
+      </label>
       <input type="submit" value="Next Question" />
     </form>
   );
