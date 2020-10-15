@@ -53,6 +53,16 @@ public abstract class Question {
     public void setQuestion(String questionStr) {
         this.questionStr = questionStr;
     }
+    public Boolean evaluateAnswer(Answer answer) {
+       String submittedAnswer = answer.getSubmittedAnswer();
+        
+       if(submittedAnswer.equals(this.correctAnswer)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     @Override
     public String toString() {
