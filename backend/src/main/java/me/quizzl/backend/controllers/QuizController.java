@@ -31,4 +31,13 @@ public class QuizController {
     public List<Quiz> getQuizzes(){
         return quizService.getQuizzes();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Quiz> getQuiz(@PathVariable String id){
+        var quiz = quizService.getQuizByID(UUID.fromString(id));
+        if (quiz.isPresent()) {
+            return new ResponseEntity<Quiz>(quiz.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<Quiz>(HttpStatus.NOT_FOUND);
+    }
 }
