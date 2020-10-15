@@ -31,7 +31,11 @@ public class QuizController {
     }
 
     @GetMapping("/{id}")
-    public Quiz getQuiz(@PathVariable String id){
-        return quizService.getQuizByID(UUID.fromString(id));
+    public ResponseEntity<Quiz> getQuiz(@PathVariable String id){
+        var quiz = quizService.getQuizByID(UUID.fromString(id));
+        if (quiz.isPresent()) {
+            return new ResponseEntity<Quiz>(quiz.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<Quiz>(HttpStatus.NOT_FOUND);
     }
 }
