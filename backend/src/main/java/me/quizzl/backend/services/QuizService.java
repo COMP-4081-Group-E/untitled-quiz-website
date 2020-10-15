@@ -20,7 +20,7 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
-    public Quiz getQuizByID(UUID id){
+    public Optional<Quiz> getQuizByID(UUID id){
         return quizRepository.findById(id);
     }
 
