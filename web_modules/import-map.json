@@ -3,6 +3,7 @@
     "react": "./react.js",
     "react-dom": "./react-dom.js",
     "react-hook-form": "./react-hook-form.js",
+    "react-loading-skeleton": "./react-loading-skeleton.js",
     "react-router-dom": "./react-router-dom.js"
   }
 }

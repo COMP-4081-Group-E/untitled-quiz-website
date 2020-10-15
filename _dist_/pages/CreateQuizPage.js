@@ -9,7 +9,12 @@ const {
 } = import.meta.env;
 
 const CreateQuizPage = () => {
+  const [title, setTitle] = useState();
   const [questions, setQuestions] = useState([]);
+
+  const updateTitle = e => {
+    setTitle(e.target.value);
+  };
 
   const addQuestion = question => {
     setQuestions([...questions, question]);
@@ -18,7 +23,10 @@ const CreateQuizPage = () => {
   const createQuiz = async () => {
     const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz`, {
       method: 'POST',
-      body: JSON.stringify(questions)
+      body: JSON.stringify({
+        title,
+        questions
+      })
     });
 
     if (!res.ok) {
@@ -31,7 +39,10 @@ const CreateQuizPage = () => {
     alert('Quiz created!');
   };
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(QuestionForm, {
+  return /*#__PURE__*/React.createElement("main", null, /*#__PURE__*/React.createElement("h1", null, "Create a Quiz"), /*#__PURE__*/React.createElement("label", null, "Title:", /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    onChange: updateTitle
+  })), /*#__PURE__*/React.createElement(QuestionForm, {
     questionNumber: questions.length + 1,
     callback: addQuestion
   }), /*#__PURE__*/React.createElement("button", {

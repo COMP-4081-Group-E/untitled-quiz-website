@@ -1,7 +1,8 @@
-import { r as react } from './common/index-0ded058e.js';
-export { r as default } from './common/index-0ded058e.js';
+import { r as react } from './common/index-c49dc486.js';
+export { r as default } from './common/index-c49dc486.js';
 
 
 
+var useEffect = react.useEffect;
 var useState = react.useState;
-export { useState };
+export { useEffect, useState };

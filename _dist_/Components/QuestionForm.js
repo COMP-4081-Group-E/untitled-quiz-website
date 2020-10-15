@@ -8,32 +8,39 @@ const QuestionForm = ({
 }) => {
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    reset
   } = useForm();
+
+  const onSubmit = question => {
+    callback(question);
+    reset();
+  };
+
   return /*#__PURE__*/React.createElement("form", {
     className: styles.input,
-    onSubmit: handleSubmit(callback)
-  }, /*#__PURE__*/React.createElement("h1", null, "Create a Quiz"), /*#__PURE__*/React.createElement("label", null, "Question ", questionNumber, ":"), /*#__PURE__*/React.createElement("input", {
+    onSubmit: handleSubmit(onSubmit)
+  }, /*#__PURE__*/React.createElement("label", null, "Question ", questionNumber, ":", /*#__PURE__*/React.createElement("input", {
     type: "text",
     name: "questionStr",
     ref: register
-  }), /*#__PURE__*/React.createElement("label", null, "Correct Answer:"), /*#__PURE__*/React.createElement("input", {
+  })), /*#__PURE__*/React.createElement("label", null, "Correct Answer:", /*#__PURE__*/React.createElement("input", {
     type: "text",
     name: "correctAnswer",
     ref: register
-  }), /*#__PURE__*/React.createElement("label", null, "Incorrect Answer"), /*#__PURE__*/React.createElement("input", {
+  })), /*#__PURE__*/React.createElement("label", null, "Incorrect Answer", /*#__PURE__*/React.createElement("input", {
     type: "text",
     name: "incorrectAnswer",
     ref: register
-  }), /*#__PURE__*/React.createElement("label", null, "Incorrect Answer"), /*#__PURE__*/React.createElement("input", {
+  })), /*#__PURE__*/React.createElement("label", null, "Incorrect Answer", /*#__PURE__*/React.createElement("input", {
     type: "text",
     name: "incorrectAnswer2",
     ref: register
-  }), /*#__PURE__*/React.createElement("label", null, "Incorrect Answer"), /*#__PURE__*/React.createElement("input", {
+  })), /*#__PURE__*/React.createElement("label", null, "Incorrect Answer", /*#__PURE__*/React.createElement("input", {
     type: "text",
     name: "incorrectAnswer3",
     ref: register
-  }), /*#__PURE__*/React.createElement("input", {
+  })), /*#__PURE__*/React.createElement("input", {
     type: "submit",
     value: "Next Question"
   }));
