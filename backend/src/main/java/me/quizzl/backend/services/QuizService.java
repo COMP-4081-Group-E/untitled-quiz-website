@@ -21,7 +21,7 @@ public class QuizService {
     }
 
     public Quiz getQuizByID(UUID id){
-        return quizRepository.getOne(id);
+        return quizRepository.findById(id);
     }
 
     public List<Quiz> getQuizzes() {
