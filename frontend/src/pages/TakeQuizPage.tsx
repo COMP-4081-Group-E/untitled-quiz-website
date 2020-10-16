@@ -13,20 +13,20 @@ const loadQuiz = async (id: any): Promise<Quiz | null> => {
       title: 'A sample quiz',
       questions: [
         {
-          questionStr: 'How many fingers am I holding up?',
+          questionStr: 'Which of the following statements is not a loop?',
           // todo: send client array of answers so cheating isn't easy
-          correctAnswer: '3',
-          incorrectAnswer: '11',
-          incorrectAnswer2: '0',
-          incorrectAnswer3: 'do thumbs count'
+          correctAnswer: 'goto',
+          incorrectAnswer: 'for',
+          incorrectAnswer2: 'do',
+          incorrectAnswer3: 'while'
         },
         {
-          questionStr: 'What color is the sky?',
+          questionStr: 'What does CPU stand for?',
           // todo: send client array of answers so cheating isn't easy
-          correctAnswer: 'Yellow',
-          incorrectAnswer: 'Red',
-          incorrectAnswer2: 'Blue',
-          incorrectAnswer3: 'Green'
+          correctAnswer: 'Central processing unit',
+          incorrectAnswer: 'Central programming unit',
+          incorrectAnswer2: 'Controlled progress unit',
+          incorrectAnswer3: 'Creative process unit'
         },
       ]
     };
