@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import type { Quiz } from '../models/quiz';
 import QuestionResponse from '../Components/QuestionResponse';
+import { useForm } from 'react-hook-form';
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
@@ -37,27 +38,40 @@ interface TakeQuizPageProps {
 }
 
 const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
-  const [quiz, setQuiz] = useState<Quiz>({ questions: [] });
+  const { register, handleSubmit } = useForm();
+  const [quiz, setQuiz] = useState<Quiz>({
+    questions: Array(5).fill({
+      questionStr: null,
+      correctAnswer: null,
+      incorrectAnswer: null,
+      incorrectAnswer2: null,
+      incorrectAnswer3: null
+    })
+  });
 
   useEffect(() => {
     loadQuiz(id)
       .then(loadedQuiz => setQuiz(loadedQuiz));
   }, []);
 
-  const submitAnswers = async () => {};
+  const submitAnswers = async (e: any) => {
+    console.log(e);
+  };
 
   return (
     <main>
       <h1>{quiz.title ?? <Skeleton />}</h1>
-      {quiz.questions.map(question => (
-        <QuestionResponse title={question.questionStr} answers={[
-          question.correctAnswer,
-          question.incorrectAnswer,
-          question.incorrectAnswer2,
-          question.incorrectAnswer3
-        ]} />
-      ))}
-      <button onClick={submitAnswers}>Submit Answers</button>
+      <form onSubmit={handleSubmit(submitAnswers)}>
+        {quiz.questions.map((question, i) => (
+          <QuestionResponse id={i} title={question.questionStr} answers={[
+            question.correctAnswer,
+            question.incorrectAnswer,
+            question.incorrectAnswer2,
+            question.incorrectAnswer3
+          ]} ref={register} key={i} />
+        ))}
+        <button onClick={submitAnswers}>Submit Answers</button>
+      </form>
     </main>
   );
 };
