@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
 const loadQuiz = async (id: any): Promise<Quiz | null> => {
-  if (id === 1) {
+  if (id == 1) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     return {
       title: 'A sample quiz',
