@@ -21,7 +21,9 @@ public class SubmissionService {
         var submission = new Submission();
         return submissionRepository.save(submission);
     }
-
+    public void deleteSubmission(Submission submission) {
+        submissionRepository.delete(submission);
+    }
     public Optional<Submission> getSubmissionByID(UUID id){
         return submissionRepository.findById(id);
     }
