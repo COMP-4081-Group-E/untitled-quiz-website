@@ -23,8 +23,8 @@ public class Answer {
     protected Boolean isCorrect;
 
     @ManyToOne
-    @JoinColumn(name="questionid", nullable = false)
-    protected Long questionid;
+    @JoinColumn(name="question", nullable = false)
+    protected Question question;
 
     @ManyToOne
     @JoinColumn(name="submission_id", nullable = false)
