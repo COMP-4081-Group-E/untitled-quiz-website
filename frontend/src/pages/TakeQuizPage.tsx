@@ -1,32 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import type { Quiz } from '../models/quiz';
 import QuestionResponse from '../Components/QuestionResponse';
 import { useForm } from 'react-hook-form';
+import { shuffle } from '../utils/shuffle';
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
-const loadQuiz = async (id: any): Promise<Quiz | null> => {
+const loadQuiz = async (id: any): Promise<LocalQuiz | null> => {
   if (id == 1) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     return {
       title: 'A sample quiz',
       questions: [
         {
-          questionStr: 'Which of the following statements is not a loop?',
+          key: 0,
+          question: 'Which of the following statements is not a loop?',
           // todo: send client array of answers so cheating isn't easy
-          correctAnswer: 'goto',
-          incorrectAnswer: 'for',
-          incorrectAnswer2: 'do',
-          incorrectAnswer3: 'while'
+          answers: shuffle([
+            'goto',
+            'for',
+            'do',
+            'while'
+          ])
         },
         {
-          questionStr: 'What does CPU stand for?',
+          key: 1,
+          question: 'What does CPU stand for?',
           // todo: send client array of answers so cheating isn't easy
-          correctAnswer: 'Central processing unit',
-          incorrectAnswer: 'Central programming unit',
-          incorrectAnswer2: 'Controlled progress unit',
-          incorrectAnswer3: 'Creative process unit'
+          answers: shuffle([
+            'Central processing unit',
+            'Central programming unit',
+            'Controlled progress unit',
+            'Creative process unit'
+          ])
         },
       ]
     };
@@ -37,9 +43,18 @@ const loadQuiz = async (id: any): Promise<Quiz | null> => {
     return null;
   }
   // todo: check what the API returns and make sure we can just say it's a Quiz
-  return await res.json() as Quiz;
+  // also, we should shuffle the answers before returning the quiz
+  return await res.json() as LocalQuiz;
 };
 
+interface LocalQuiz {
+  title: string,
+  questions: {
+    key: any,
+    question: string,
+    answers: string[]
+  }[]
+}
 interface Submission {
   [id: number]: string
 }
@@ -50,14 +65,13 @@ interface TakeQuizPageProps {
 
 const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
   const { register, handleSubmit } = useForm<Submission>();
-  const [quiz, setQuiz] = useState<Quiz | null>({
-    questions: Array(5).fill({
-      questionStr: null,
-      correctAnswer: null,
-      incorrectAnswer: null,
-      incorrectAnswer2: null,
-      incorrectAnswer3: null
-    })
+  const [quiz, setQuiz] = useState<LocalQuiz | null>({
+    title: '',
+    questions: Array(5).map((_, i) => ({
+      key: i,
+      question: '',
+      answers: []
+    }))
   });
 
   useEffect(() => {
@@ -84,15 +98,10 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
 
   return (
     <main>
-      <h1>{quiz.title ?? <Skeleton />}</h1>
+      <h1>{quiz.title && quiz.title.length ? quiz.title : <Skeleton />}</h1>
       <form onSubmit={handleSubmit(submitAnswers)}>
-        {quiz.questions.map((question, i) => (
-          <QuestionResponse id={i} title={question.questionStr} answers={[
-            question.correctAnswer,
-            question.incorrectAnswer,
-            question.incorrectAnswer2,
-            question.incorrectAnswer3
-          ]} ref={register} key={i} />
+        {quiz.questions.map(({ key, question, answers }) => (
+          <QuestionResponse id={key} title={question} answers={answers} ref={register} key={key} />
         ))}
         <button>Submit Answers</button>
       </form>
