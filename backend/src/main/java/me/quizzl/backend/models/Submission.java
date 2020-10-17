@@ -17,13 +17,15 @@ import org.hibernate.annotations.GenericGenerator;
 public class Submission {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
         name = "UUID",
         strategy = "org.hibernate.id.UUIDGenerator"
     )
-    
+    @Column(name = "id", unique = true, updatable = false, nullable = false)
+    private UUID id;
+
+
     @ManyToOne
     @JoinColumn(name="quiz_id", nullable = false)
     protected Quiz quiz;
