@@ -1,7 +1,7 @@
 
 package me.quizzl.backend.services;
 
-import me.quizzl.backend.models.Quiz;
+import me.quizzl.backend.models.*;
 import me.quizzl.backend.repositories.QuizRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +29,24 @@ public class QuizService {
     public List<Quiz> getQuizzes() {
         return quizRepository.findAll();
     }
+    
+    public double gradeSubmission(Submission submission) {
+         
+         UUID quizId = submission.getQuizId();
+         Optional<Quiz> optionalQuiz =  getQuizByID(quizId);
+         Quiz quiz = optionalQuiz.get();
+         List<Question> quizQuestions = quiz.getQuestions();
+         List<Answer> submissionAnswers = submission.getAnswers();
+         
+         for(int i = 0; i < quizQuestions.size(); i++) {
+            // Sets each answers isCorrect value based on the comparison done with the correct answer and submitted answer  
+            submissionAnswers.get(i).setIsCorrect(quizQuestions.get(i).evaluateAnswer(submissionAnswers.get(i)));
+        }
+
+        return submission.getTotalQuestions() / submission.getNumCorrect();
+
+    
+    
+    }
 }
+

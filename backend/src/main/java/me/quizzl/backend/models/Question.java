@@ -1,4 +1,5 @@
 package me.quizzl.backend.models;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import java.util.List;
 
 
 // Base question class that other question types will inherit from (e.g. MultipleChoice, TrueFalse, ShortAnswer, etc.)
@@ -18,6 +22,9 @@ public abstract class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", updatable = false, nullable = false)
     protected Long id;
+
+    @OneToMany(mappedBy = "question")
+    protected List<Answer> answers;
 
     @ManyToOne
     @JoinColumn(name="quiz_id", nullable = false)
@@ -52,6 +59,16 @@ public abstract class Question {
     }
     public void setQuestion(String questionStr) {
         this.questionStr = questionStr;
+    }
+    public Boolean evaluateAnswer(Answer answer) {
+       String submittedAnswer = answer.getSubmittedAnswer();
+        
+       if(submittedAnswer.equals(this.correctAnswer)){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override

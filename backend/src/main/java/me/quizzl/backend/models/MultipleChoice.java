@@ -19,6 +19,12 @@ public class MultipleChoice extends Question{
     public String[] getIncorrect() {
         return this.incorrectAnswers;
     }
+    @Override
+    public Boolean evaluateAnswer(Answer answer) {
+        String submittedAnswer = answer.getSubmittedAnswer();
+         
+        return submittedAnswer.equals(this.correctAnswer);
+    }
 
     // Will likely update in the future if necessary
     @Override

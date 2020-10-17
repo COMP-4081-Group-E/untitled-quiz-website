@@ -26,6 +26,9 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz")
     private List<Question> questionList;
+
+    @OneToMany(mappedBy = "quiz")
+    private List<Submission> submissions;
     
     // Constructor
     public Quiz() {
