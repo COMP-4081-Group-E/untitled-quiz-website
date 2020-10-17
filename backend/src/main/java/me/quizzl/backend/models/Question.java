@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 
 // Base question class that other question types will inherit from (e.g. MultipleChoice, TrueFalse, ShortAnswer, etc.)
@@ -17,6 +18,7 @@ public abstract class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", updatable = false, nullable = false)
+    @OneToMany(mappedBy = "question")
     protected Long id;
 
     @ManyToOne

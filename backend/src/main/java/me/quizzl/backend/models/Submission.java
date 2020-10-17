@@ -26,12 +26,16 @@ public class Submission {
 
     @OneToMany(mappedBy = "submission")
     private List<Answer> answerList;
-    
+
+    protected double totalQuestions;
+    protected double numCorrect;
+
     public Submission() {
 
     }
     public Submission(List<Answer> answerList) {
         this.answerList = answerList;
+        setTotalQuestions(answerList.size());
     }   
     
     public UUID getQuizId() {
@@ -42,5 +46,17 @@ public class Submission {
     }
     public List<Answer> getAnswers() {
         return this.answerList;
+    }
+    public void incrementNumCorrect() {
+        this.numCorrect++;
+    }
+    public double getNumCorrect() {
+        return this.numCorrect;
+    }
+    public void setTotalQuestions(double totalQuestions)  {
+        this.totalQuestions = totalQuestions;
+    }
+    public double getTotalQuestions() {
+        return this.totalQuestions;
     }
 }

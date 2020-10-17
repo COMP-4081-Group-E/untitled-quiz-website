@@ -28,26 +28,21 @@ public class QuizService {
         return quizRepository.findAll();
     }
     
-    public Grade gradeSubmission(Submission submission) {
+    public double gradeSubmission(Submission submission) {
          
-         Grade grade = new Grade();
          UUID quizId = submission.getQuizId();
          Quiz quiz = getQuizByID(quizId);
          List<Question> quizQuestions = quiz.getQuestions();
          List<Answer> submissionAnswers = submission.getAnswers();
          
          for(int i = 0; i < quizQuestions.size(); i++) {
-             Boolean isCorrect = quizQuestions.get(i).evaluateAnswer(submissionAnswers.get(i));
-        
-            if(isCorrect) {
-                grade.incrementCorrect();
-            }
-            else {
-                 grade.incrementIncorrect();
-            }
+            // Sets each answers isCorrect value based on the comparison done with the correct answer and submitted answer  
+            submissionAnswers.get(i).setIsCorrect(quizQuestions.get(i).evaluateAnswer(submissionAnswers.get(i)));
         }
+        
+        return submission.getTotalQuestions() / submission.getNumCorrect();
 
-    return grade;
+    
     
     }
 }

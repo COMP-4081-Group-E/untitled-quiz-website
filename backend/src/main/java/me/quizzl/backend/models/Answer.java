@@ -16,10 +16,15 @@ public class Answer {
     @Column(name="id", updatable = false, nullable = false)
     protected Long id;
 
-    @Column(name = "question_string")
-    protected String questionStr;
     @Column(name = "submitted_answer")
     protected String submittedAnswer;
+
+    @Column(name = "is_correct")
+    protected Boolean isCorrect;
+
+    @ManyToOne
+    @JoinColumn(name="questionid", nullable = false)
+    protected Long questionid;
 
     @ManyToOne
     @JoinColumn(name="submission_id", nullable = false)
@@ -28,12 +33,14 @@ public class Answer {
     public Answer() {
 
     }
-    public Answer(String questionStr, String submittedAnswer) {
-        this.questionStr = questionStr;
+    public Answer(String submittedAnswer) {
         this.submittedAnswer = submittedAnswer;
     }
-    public void setQuestion(String questionStr) {
-        this.questionStr = questionStr;
+    public void setIsCorrect(Boolean isCorrect) {
+        this.isCorrect = isCorrect;
+        if(this.isCorrect) {
+            this.submission.incrementNumCorrect();
+        }
     }
     public void setSubmittedAnswer(String submittedAnswer) {
         this.submittedAnswer = submittedAnswer;
@@ -41,7 +48,7 @@ public class Answer {
     public String getSubmittedAnswer() {
         return this.submittedAnswer;
     }
-    public String getQuestion() {
-        return this.questionStr;
+    public Boolean getIsCorrect() {
+        return this.isCorrect;
     }
 }
