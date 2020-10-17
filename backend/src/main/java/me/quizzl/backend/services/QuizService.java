@@ -6,9 +6,11 @@ import me.quizzl.backend.repositories.QuizRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
 
 @Service
 public class QuizService {
@@ -20,8 +22,8 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
-    public Quiz getQuizByID(UUID id) {
-        return quizRepository.getOne(id);
+    public Optional<Quiz> getQuizByID(UUID id){
+        return quizRepository.findById(id);
     }
 
     public List<Quiz> getQuizzes() {
@@ -31,7 +33,8 @@ public class QuizService {
     public double gradeSubmission(Submission submission) {
          
          UUID quizId = submission.getQuizId();
-         Quiz quiz = getQuizByID(quizId);
+         Optional<Quiz> optionalQuiz =  getQuizByID(quizId);
+         Quiz quiz = optionalQuiz.get();
          List<Question> quizQuestions = quiz.getQuestions();
          List<Answer> submissionAnswers = submission.getAnswers();
          
@@ -39,7 +42,7 @@ public class QuizService {
             // Sets each answers isCorrect value based on the comparison done with the correct answer and submitted answer  
             submissionAnswers.get(i).setIsCorrect(quizQuestions.get(i).evaluateAnswer(submissionAnswers.get(i)));
         }
-        
+
         return submission.getTotalQuestions() / submission.getNumCorrect();
 
     
