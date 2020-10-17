@@ -3,6 +3,7 @@ package me.quizzl.backend.models;
 import java.util.UUID;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Submission {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
         name = "UUID",
