@@ -65,18 +65,14 @@ interface TakeQuizPageProps {
 
 const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
   const { register, handleSubmit } = useForm<Submission>();
-  const [quiz, setQuiz] = useState<LocalQuiz | null>({
-    title: '',
-    questions: Array(5).map((_, i) => ({
-      key: i,
-      question: '',
-      answers: []
-    }))
-  });
+  const [quiz, setQuiz] = useState<LocalQuiz | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    loadQuiz(id)
-      .then(loadedQuiz => setQuiz(loadedQuiz));
+    loadQuiz(id).then(loadedQuiz => {
+      setQuiz(loadedQuiz);
+      setLoading(false);
+    });
   }, []);
 
   const submitAnswers = async (submission: Submission) => {
@@ -87,7 +83,7 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
     // or something
   };
 
-  if (!quiz) {
+  if (quiz == null && !loading) {
     return (
       <main>
         <h1>Sorry!</h1>
@@ -98,10 +94,16 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
 
   return (
     <main>
-      <h1>{quiz.title && quiz.title.length ? quiz.title : <Skeleton />}</h1>
+      <h1>{!loading ? quiz!.title : <Skeleton />}</h1>
       <form onSubmit={handleSubmit(submitAnswers)}>
-        {quiz.questions.map(({ key, question, answers }) => (
-          <QuestionResponse id={key} title={question} answers={answers} ref={register} key={key} />
+        {loading ? (<>
+          <QuestionResponse loading={loading} />
+          <QuestionResponse loading={loading} />
+          <QuestionResponse loading={loading} />
+          <QuestionResponse loading={loading} />
+          <QuestionResponse loading={loading} />
+        </>) : quiz!.questions.map(({ key, question, answers }) => (
+          <QuestionResponse loading={loading} id={key} title={question} answers={answers} ref={register} key={key} />
         ))}
         <button>Submit Answers</button>
       </form>
