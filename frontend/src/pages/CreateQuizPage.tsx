@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import type { Question } from "../models/question";
 import Footer from "../Components/Footer";
 import QuestionForm from "../Components/QuestionForm";
+import MainLayout from "../Components/MainLayout";
+import {Button} from 'react-bootstrap';
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
@@ -33,16 +35,15 @@ const CreateQuizPage = () => {
   };
 
   return (
-    <main>
+    <MainLayout>
       <h1>Create a Quiz</h1>
       <label>
-        Title:
+        Quiz Title:
         <input type='text' onChange={updateTitle} />
       </label>
       <QuestionForm questionNumber={questions.length + 1} callback={addQuestion} />
-      <button onClick={createQuiz}>Create Quiz</button>
-      <Footer/>
-    </main>
+      <Button variant = "success" onClick={createQuiz}>Create Quiz</Button>
+    </MainLayout>
   )
 }
 export default CreateQuizPage
