@@ -2,8 +2,9 @@ import __SNOWPACK_ENV__ from '../../__snowpack__/env.js';
 import.meta.env = __SNOWPACK_ENV__;
 
 import React, { useState } from "../../web_modules/react.js";
-import Footer from "../Components/Footer.js";
 import QuestionForm from "../Components/QuestionForm.js";
+import MainLayout from "../Components/MainLayout.js";
+import { Button } from '../../web_modules/react-bootstrap.js';
 const {
   SNOWPACK_PUBLIC_API_URL
 } = import.meta.env;
@@ -39,15 +40,16 @@ const CreateQuizPage = () => {
     alert('Quiz created!');
   };
 
-  return /*#__PURE__*/React.createElement("main", null, /*#__PURE__*/React.createElement("h1", null, "Create a Quiz"), /*#__PURE__*/React.createElement("label", null, "Title:", /*#__PURE__*/React.createElement("input", {
+  return /*#__PURE__*/React.createElement(MainLayout, null, /*#__PURE__*/React.createElement("h1", null, "Create a Quiz"), /*#__PURE__*/React.createElement("label", null, "Quiz Title:", /*#__PURE__*/React.createElement("input", {
     type: "text",
     onChange: updateTitle
   })), /*#__PURE__*/React.createElement(QuestionForm, {
     questionNumber: questions.length + 1,
     callback: addQuestion
-  }), /*#__PURE__*/React.createElement("button", {
+  }), /*#__PURE__*/React.createElement(Button, {
+    variant: "success",
     onClick: createQuiz
-  }, "Create Quiz"), /*#__PURE__*/React.createElement(Footer, null));
+  }, "Create Quiz"));
 };
 
 export default CreateQuizPage;

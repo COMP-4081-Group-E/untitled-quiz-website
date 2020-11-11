@@ -1,6 +1,9 @@
 {
   "imports": {
+    "bootstrap/dist/css/bootstrap.min.css": "./bootstrap/dist/css/bootstrap.min.css",
     "react": "./react.js",
+    "react-bootstrap": "./react-bootstrap.js",
+    "react-bootstrap/Col": "./react-bootstrap/Col.js",
     "react-dom": "./react-dom.js",
     "react-hook-form": "./react-hook-form.js",
     "react-loading-skeleton": "./react-loading-skeleton.js",

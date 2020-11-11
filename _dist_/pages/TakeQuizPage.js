@@ -6,6 +6,8 @@ import Skeleton from '../../web_modules/react-loading-skeleton.js';
 import QuestionResponse from '../Components/QuestionResponse.js';
 import { useForm } from '../../web_modules/react-hook-form.js';
 import { shuffle } from '../utils/shuffle.js';
+import MainLayout from '../Components/MainLayout.js';
+import { Button, Form } from '../../web_modules/react-bootstrap.js';
 const {
   SNOWPACK_PUBLIC_API_URL
 } = import.meta.env;
@@ -64,10 +66,10 @@ const TakeQuizPage = ({
   };
 
   if (quiz == null && !loading) {
-    return /*#__PURE__*/React.createElement("main", null, /*#__PURE__*/React.createElement("h1", null, "Sorry!"), /*#__PURE__*/React.createElement("p", null, "The quiz you asked for couldn't be found :("));
+    return /*#__PURE__*/React.createElement(MainLayout, null, /*#__PURE__*/React.createElement("h1", null, "Sorry!"), /*#__PURE__*/React.createElement("p", null, "The quiz you asked for couldn't be found :("));
   }
 
-  return /*#__PURE__*/React.createElement("main", null, /*#__PURE__*/React.createElement("h1", null, !loading ? quiz.title : /*#__PURE__*/React.createElement(Skeleton, null)), /*#__PURE__*/React.createElement("form", {
+  return /*#__PURE__*/React.createElement(MainLayout, null, /*#__PURE__*/React.createElement("h1", null, !loading ? quiz.title : /*#__PURE__*/React.createElement(Skeleton, null)), /*#__PURE__*/React.createElement(Form, {
     onSubmit: handleSubmit(submitAnswers)
   }, loading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(QuestionResponse, {
     loading: loading
@@ -90,7 +92,9 @@ const TakeQuizPage = ({
     answers: answers,
     ref: register,
     key: key
-  })), /*#__PURE__*/React.createElement("button", null, "Submit Answers")));
+  })), /*#__PURE__*/React.createElement(Button, {
+    type: "submit"
+  }, "Submit Answers")));
 };
 
 export default TakeQuizPage;

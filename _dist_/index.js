@@ -5,6 +5,7 @@ import React from '../web_modules/react.js';
 import { render } from '../web_modules/react-dom.js';
 import { BrowserRouter } from '../web_modules/react-router-dom.js';
 import App from './App.js';
+import '../web_modules/bootstrap/dist/css/bootstrap.min.css.proxy.js';
 render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(BrowserRouter, null, /*#__PURE__*/React.createElement(App, null))), document.getElementById('root')); // Hot Module Replacement (HMR)
 // Learn more: https://www.snowpack.dev/#hot-module-replacement
 
