@@ -3,6 +3,8 @@ import Skeleton from 'react-loading-skeleton';
 import QuestionResponse from '../Components/QuestionResponse';
 import { useForm } from 'react-hook-form';
 import { shuffle } from '../utils/shuffle';
+import MainLayout from '../Components/MainLayout';
+import { Button, Form } from 'react-bootstrap';
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
@@ -85,17 +87,17 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
 
   if (quiz == null && !loading) {
     return (
-      <main>
+      <MainLayout>
         <h1>Sorry!</h1>
         <p>The quiz you asked for couldn't be found :(</p>
-      </main>
+      </MainLayout>
     );
   }
 
   return (
-    <main>
+    <MainLayout>
       <h1>{!loading ? quiz!.title : <Skeleton />}</h1>
-      <form onSubmit={handleSubmit(submitAnswers)}>
+      <Form onSubmit={handleSubmit(submitAnswers)}>
         {loading ? (<>
           <QuestionResponse loading={loading} />
           <QuestionResponse loading={loading} />
@@ -105,9 +107,9 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
         </>) : quiz!.questions.map(({ key, question, answers }) => (
           <QuestionResponse loading={loading} id={key} title={question} answers={answers} ref={register} key={key} />
         ))}
-        <button>Submit Answers</button>
-      </form>
-    </main>
+        <Button type='submit'>Submit Answers</Button>
+      </Form>
+    </MainLayout>
   );
 };
 

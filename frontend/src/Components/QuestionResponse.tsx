@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from 'react-bootstrap';
 import Skeleton from 'react-loading-skeleton';
 
 interface ResponseProps {
@@ -14,27 +15,36 @@ type QuestionResponseProps = {
 
 const SkeletonResponse = () => {
   return (
-    <div>
-      <h2><Skeleton /></h2>
+    <Form.Group>
+      <Form.Label><Skeleton /></Form.Label>
       <Skeleton />
       <Skeleton />
       <Skeleton />
       <Skeleton />
-    </div>
+    </Form.Group>
   );
 };
 
 const Response = React.forwardRef<HTMLInputElement, ResponseProps>(({ id, title, answers }, ref) => {
   return (
-    <div>
-      <h2>{title}</h2>
+    <Form.Group>
+      <Form.Label>{title}</Form.Label>
       {answers.map((answer, i) => (
-        <label data-key={`${id}-${i}`} key={`${id}-${i}`}>
-          <input type='radio' name={id} value={answer} ref={ref} />
-          {answer}
-        </label>
+        // <label data-key={`${id}-${i}`} key={`${id}-${i}`}>
+        //   <input type='radio' name={id} value={answer} ref={ref} />
+        //   {answer}
+        // </label>
+        <Form.Check
+          type='radio'
+          name={id}
+          label={answer}
+          value={answer}
+          id={`${id}-${i}`}
+          key={`${id}-${i}`}
+          ref={ref}
+        />
       ))}
-    </div>
+    </Form.Group>
   );
 });
 
