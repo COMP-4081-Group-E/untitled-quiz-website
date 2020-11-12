@@ -1,7 +1,10 @@
 // basic beginnings of an API
 package me.quizzl.backend.controllers;
 
+import me.quizzl.backend.models.MultipleChoice;
+import me.quizzl.backend.models.Question;
 import me.quizzl.backend.models.Quiz;
+import me.quizzl.backend.requests.QuestionRequest;
 import me.quizzl.backend.services.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +13,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+
+class CreateQuizRequest {
+    private String title;
+    private List<QuestionRequest> questions;
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public List<QuestionRequest> getQuestions() {
+        return questions;
+    }
+    public void setQuestions(List<QuestionRequest> questions) {
+        this.questions = questions;
+    }
+}
 
 @RequestMapping("api/quiz")
 @RestController
@@ -22,8 +43,17 @@ public class QuizController {
     }
 
     @PostMapping
-    public void addQuiz(@RequestBody Quiz quiz){
-        quizService.addQuiz();
+    public ResponseEntity<UUID> addQuiz(@RequestBody CreateQuizRequest request) {
+        var quiz = new Quiz(request.getTitle());
+
+        for (var q : request.getQuestions()) {
+            var question = new MultipleChoice(q.getQuestionStr(), q.getCorrectAnswer(),
+                new String[] { q.getIncorrectAnswer(), q.getIncorrectAnswer2(), q.getIncorrectAnswer3() });
+            quiz.addQuestion(question);
+        }
+        
+        var newQuiz = quizService.saveQuiz(quiz);
+        return new ResponseEntity<UUID>(newQuiz.getQuizId(), HttpStatus.CREATED);
     }
 
     @GetMapping

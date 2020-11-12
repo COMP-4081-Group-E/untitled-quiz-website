@@ -18,16 +18,12 @@ public class Submission {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", unique = true, updatable = false, nullable = false)
     private UUID id;
 
-
     @ManyToOne
-    @JoinColumn(name="quiz_id", nullable = false)
+    @JoinColumn(name = "quiz_id", nullable = false)
     protected Quiz quiz;
 
     @OneToMany(mappedBy = "submission")
@@ -39,29 +35,53 @@ public class Submission {
     public Submission() {
 
     }
+
     public Submission(List<Answer> answerList) {
         this.answerList = answerList;
         setTotalQuestions(answerList.size());
-    }   
-    
+    }
+
+    public void grade() {
+        List<Question> quizQuestions = this.quiz.getQuestions();
+        
+        for (int i = 0; i < quizQuestions.size(); i++) {
+            /*
+                Sets each answers isCorrect value based on the comparison done with the
+                correct answer and submitted answer
+            */
+            var isCorrect = quizQuestions.get(i).evaluateAnswer(answerList.get(i));
+            answerList.get(i).setIsCorrect(isCorrect);
+        }
+    }
+
+    public UUID getId() {
+        return this.id;
+    }
+
     public UUID getQuizId() {
         return this.quiz.getQuizId();
     }
+
     public void setAnswers(List<Answer> answerList) {
         this.answerList = answerList;
     }
+
     public List<Answer> getAnswers() {
         return this.answerList;
     }
+
     public void incrementNumCorrect() {
         this.numCorrect++;
     }
+
     public double getNumCorrect() {
         return this.numCorrect;
     }
-    public void setTotalQuestions(double totalQuestions)  {
+
+    public void setTotalQuestions(double totalQuestions) {
         this.totalQuestions = totalQuestions;
     }
+
     public double getTotalQuestions() {
         return this.totalQuestions;
     }

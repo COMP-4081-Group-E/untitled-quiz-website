@@ -6,7 +6,6 @@ import me.quizzl.backend.repositories.QuizRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,8 +16,7 @@ public class QuizService {
     @Autowired
     private QuizRepository quizRepository;
 
-    public Quiz addQuiz() {
-        var quiz = new Quiz();
+    public Quiz saveQuiz(Quiz quiz) {
         return quizRepository.save(quiz);
     }
 
