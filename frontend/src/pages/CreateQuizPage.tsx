@@ -18,6 +18,10 @@ const CreateQuizPage = () => {
     setQuestions([...questions, question]);
   };
 
+  const linkToQuiz = () => {
+    window.location.assign(`${window.location.hostname}/quiz/${id}`);
+  }
+
   const createQuiz = async () => {
     const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz`, {
       method: 'POST',
@@ -30,6 +34,7 @@ const CreateQuizPage = () => {
     }
 
     setQuestions([]);
+    linkToQuiz();
     // todo: probably don't use an alert for this in the future
     alert('Quiz created!');
   };
