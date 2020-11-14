@@ -2,6 +2,9 @@ import React from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import type { Question } from "../models/question";
 import styles from './QuestionForm.module.css';
+import { Button, Form } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 interface QuestionFormProps {
   callback: (question: Question) => (void | Promise<void>);
@@ -16,29 +19,27 @@ const QuestionForm: React.FunctionComponent<QuestionFormProps> = ({ callback, qu
   };
 
   return (
-    <form className={styles.input} onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        Question {questionNumber}:
-        <input type="text" name="questionStr" ref={register} />
-      </label>
-      <label>
-        Correct Answer:
-        <input type="text" name="correctAnswer" ref={register} />
-      </label>
-      <label>
-        Incorrect Answer
-        <input type="text" name="incorrectAnswer" ref={register} />
-      </label>
-      <label>
-        Incorrect Answer
-        <input type="text" name="incorrectAnswer2" ref={register} />
-      </label>
-      <label>
-        Incorrect Answer
-        <input type="text" name="incorrectAnswer3" ref={register} />
-      </label>
-      <input type="submit" value="Next Question" />
-    </form>
+    <Form className={styles.input} onSubmit={handleSubmit(onSubmit)}>
+        <Form.Label>Question {questionNumber}:</Form.Label>
+        <Form.Control size = "sm" type="text" name="questionStr" ref={register} />
+        <Form.Label>Correct Answer:</Form.Label>
+        <Form.Control size = "sm" type="text" name="correctAnswer" ref={register} />
+      <Form.Row>
+        <Col>
+          <Form.Label>Incorrect Answer:</Form.Label>
+          <Form.Control size = "sm"  type="text" name="incorrectAnswer" ref={register} />
+        </Col>
+        <Col>
+          <Form.Label>Incorrect Answer:</Form.Label>
+          <Form.Control size = "sm" type="text" name="incorrectAnswer2" ref={register} />
+        </Col>
+        <Col>
+          <Form.Label>Incorrect Answer:</Form.Label>
+          <Form.Control size = "sm" type="text" name="incorrectAnswer3" ref={register} />
+        </Col>
+      </Form.Row>
+      <Button type="submit">Next Question</Button>
+    </Form> 
   );
 }
 
