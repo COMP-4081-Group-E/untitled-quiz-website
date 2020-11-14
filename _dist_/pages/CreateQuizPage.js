@@ -4,7 +4,7 @@ import.meta.env = __SNOWPACK_ENV__;
 import React, { useState } from "../../web_modules/react.js";
 import QuestionForm from "../Components/QuestionForm.js";
 import MainLayout from "../Components/MainLayout.js";
-import { Button } from '../../web_modules/react-bootstrap.js';
+import { Alert, Button } from '../../web_modules/react-bootstrap.js';
 const {
   SNOWPACK_PUBLIC_API_URL
 } = import.meta.env;
@@ -12,6 +12,7 @@ const {
 const CreateQuizPage = () => {
   const [title, setTitle] = useState();
   const [questions, setQuestions] = useState([]);
+  const [link, setLink] = useState();
 
   const updateTitle = e => {
     setTitle(e.target.value);
@@ -35,12 +36,14 @@ const CreateQuizPage = () => {
       return;
     }
 
-    setQuestions([]); // todo: probably don't use an alert for this in the future
+    setQuestions([]);
+    const id = await res.text;
+    setLink(`${window.location.protocol}//${window.location.hostname}/quiz/${id}`); // todo: probably don't use an alert for this in the future
 
     alert('Quiz created!');
   };
 
-  return /*#__PURE__*/React.createElement(MainLayout, null, /*#__PURE__*/React.createElement("h1", null, "Create a Quiz"), /*#__PURE__*/React.createElement("label", null, "Quiz Title:", /*#__PURE__*/React.createElement("input", {
+  return /*#__PURE__*/React.createElement(MainLayout, null, link && /*#__PURE__*/React.createElement(Alert, null, " Quiz at: ", link), /*#__PURE__*/React.createElement("h1", null, "Create a Quiz"), /*#__PURE__*/React.createElement("label", null, "Quiz Title:", /*#__PURE__*/React.createElement("input", {
     type: "text",
     onChange: updateTitle
   })), /*#__PURE__*/React.createElement(QuestionForm, {

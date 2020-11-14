@@ -2,7 +2,7 @@ import { r as react, c as createCommonjsModule } from './common/index-c49dc486.j
 import { _ as _objectWithoutPropertiesLoose, a as _extends } from './common/objectWithoutPropertiesLoose-0056600f.js';
 import { c as classnames, u as useBootstrapPrefix, C as Col } from './common/Col-e65bb4de.js';
 export { C as Col } from './common/Col-e65bb4de.js';
-import { _ as _inheritsLoose, p as propTypes$1 } from './common/index-614fe6c3.js';
+import { _ as _inheritsLoose, p as propTypes$2 } from './common/index-614fe6c3.js';
 import { r as reactDom } from './common/index-74b67204.js';
 
 function defaultKey(key) {
@@ -818,6 +818,75 @@ function useEventCallback(fn) {
   }, [ref]);
 }
 
+var _fadeStyles;
+var defaultProps$1 = {
+  in: false,
+  timeout: 300,
+  mountOnEnter: false,
+  unmountOnExit: false,
+  appear: false
+};
+var fadeStyles = (_fadeStyles = {}, _fadeStyles[ENTERING] = 'show', _fadeStyles[ENTERED] = 'show', _fadeStyles);
+var Fade = react.forwardRef(function (_ref, ref) {
+  var className = _ref.className,
+      children = _ref.children,
+      props = _objectWithoutPropertiesLoose(_ref, ["className", "children"]);
+
+  var handleEnter = react.useCallback(function (node) {
+    triggerBrowserReflow(node);
+    if (props.onEnter) props.onEnter(node);
+  }, [props]);
+  return /*#__PURE__*/react.createElement(Transition, _extends({
+    ref: ref,
+    addEndListener: transitionEnd
+  }, props, {
+    onEnter: handleEnter
+  }), function (status, innerProps) {
+    return react.cloneElement(children, _extends({}, innerProps, {
+      className: classnames('fade', className, children.props.className, fadeStyles[status])
+    }));
+  });
+});
+Fade.defaultProps = defaultProps$1;
+Fade.displayName = 'Fade';
+
+var propTypes = {
+  label: propTypes$2.string.isRequired,
+  onClick: propTypes$2.func
+};
+var defaultProps$2 = {
+  label: 'Close'
+};
+var CloseButton = react.forwardRef(function (_ref, ref) {
+  var label = _ref.label,
+      onClick = _ref.onClick,
+      className = _ref.className,
+      props = _objectWithoutPropertiesLoose(_ref, ["label", "onClick", "className"]);
+
+  return /*#__PURE__*/react.createElement("button", _extends({
+    ref: ref,
+    type: "button",
+    className: classnames('close', className),
+    onClick: onClick
+  }, props), /*#__PURE__*/react.createElement("span", {
+    "aria-hidden": "true"
+  }, "\xD7"), /*#__PURE__*/react.createElement("span", {
+    className: "sr-only"
+  }, label));
+});
+CloseButton.displayName = 'CloseButton';
+CloseButton.propTypes = propTypes;
+CloseButton.defaultProps = defaultProps$2;
+
+var divWithClassName = (function (className) {
+  return react.forwardRef(function (p, ref) {
+    return /*#__PURE__*/react.createElement("div", _extends({}, p, {
+      ref: ref,
+      className: classnames(p.className, className)
+    }));
+  });
+});
+
 var rHyphen = /-(.)/g;
 function camelize(string) {
   return string.replace(rHyphen, function (_, chr) {
@@ -920,7 +989,64 @@ var SafeAnchor = react.forwardRef(function (_ref, ref) {
 });
 SafeAnchor.displayName = 'SafeAnchor';
 
-var defaultProps$1 = {
+var DivStyledAsH4 = divWithClassName('h4');
+DivStyledAsH4.displayName = 'DivStyledAsH4';
+var AlertHeading = createWithBsPrefix('alert-heading', {
+  Component: DivStyledAsH4
+});
+var AlertLink = createWithBsPrefix('alert-link', {
+  Component: SafeAnchor
+});
+var defaultProps$3 = {
+  show: true,
+  transition: Fade,
+  closeLabel: 'Close alert'
+};
+var Alert = react.forwardRef(function (uncontrolledProps, ref) {
+  var _useUncontrolled = useUncontrolled(uncontrolledProps, {
+    show: 'onClose'
+  }),
+      bsPrefix = _useUncontrolled.bsPrefix,
+      show = _useUncontrolled.show,
+      closeLabel = _useUncontrolled.closeLabel,
+      className = _useUncontrolled.className,
+      children = _useUncontrolled.children,
+      variant = _useUncontrolled.variant,
+      onClose = _useUncontrolled.onClose,
+      dismissible = _useUncontrolled.dismissible,
+      transition = _useUncontrolled.transition,
+      props = _objectWithoutPropertiesLoose(_useUncontrolled, ["bsPrefix", "show", "closeLabel", "className", "children", "variant", "onClose", "dismissible", "transition"]);
+
+  var prefix = useBootstrapPrefix(bsPrefix, 'alert');
+  var handleClose = useEventCallback(function (e) {
+    if (onClose) {
+      onClose(false, e);
+    }
+  });
+  var Transition = transition === true ? Fade : transition;
+  var alert = /*#__PURE__*/react.createElement("div", _extends({
+    role: "alert"
+  }, Transition ? props : undefined, {
+    ref: ref,
+    className: classnames(className, prefix, variant && prefix + "-" + variant, dismissible && prefix + "-dismissible")
+  }), dismissible && /*#__PURE__*/react.createElement(CloseButton, {
+    onClick: handleClose,
+    label: closeLabel
+  }), children);
+  if (!Transition) return show ? alert : null;
+  return /*#__PURE__*/react.createElement(Transition, _extends({
+    unmountOnExit: true
+  }, props, {
+    ref: undefined,
+    in: show
+  }), alert);
+});
+Alert.displayName = 'Alert';
+Alert.defaultProps = defaultProps$3;
+Alert.Link = AlertLink;
+Alert.Heading = AlertHeading;
+
+var defaultProps$4 = {
   variant: 'primary',
   active: false,
   disabled: false
@@ -963,7 +1089,7 @@ var Button = react.forwardRef(function (_ref, ref) {
   }));
 });
 Button.displayName = 'Button';
-Button.defaultProps = defaultProps$1;
+Button.defaultProps = defaultProps$4;
 
 var context = react.createContext(null);
 context.displayName = 'NavbarContext';
@@ -1057,17 +1183,17 @@ function all() {
 module.exports = exports['default'];
 });
 
-var propTypes = {
+var propTypes$1 = {
   /**
    * Specify whether the feedback is for valid or invalid fields
    *
    * @type {('valid'|'invalid')}
    */
-  type: propTypes$1.string,
+  type: propTypes$2.string,
 
   /** Display feedback as a tooltip. */
-  tooltip: propTypes$1.bool,
-  as: propTypes$1.elementType
+  tooltip: propTypes$2.bool,
+  as: propTypes$2.elementType
 };
 var Feedback = react.forwardRef( // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
 function (_ref, ref) {
@@ -1086,7 +1212,7 @@ function (_ref, ref) {
   }));
 });
 Feedback.displayName = 'Feedback';
-Feedback.propTypes = propTypes;
+Feedback.propTypes = propTypes$1;
 
 var FormContext = react.createContext({
   controlId: undefined
@@ -1434,7 +1560,7 @@ var FormGroup = react.forwardRef(function (_ref, ref) {
 });
 FormGroup.displayName = 'FormGroup';
 
-var defaultProps$2 = {
+var defaultProps$5 = {
   column: false,
   srOnly: false
 };
@@ -1472,7 +1598,7 @@ var FormLabel = react.forwardRef(function (_ref, ref) {
   );
 });
 FormLabel.displayName = 'FormLabel';
-FormLabel.defaultProps = defaultProps$2;
+FormLabel.defaultProps = defaultProps$5;
 
 var FormText = react.forwardRef( // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
 function (_ref, ref) {
@@ -1502,7 +1628,7 @@ Switch.Input = FormCheck.Input;
 Switch.Label = FormCheck.Label;
 
 var FormRow = createWithBsPrefix('form-row');
-var defaultProps$3 = {
+var defaultProps$6 = {
   inline: false
 };
 var FormImpl = react.forwardRef(function (_ref, ref) {
@@ -1521,7 +1647,7 @@ var FormImpl = react.forwardRef(function (_ref, ref) {
   }));
 });
 FormImpl.displayName = 'Form';
-FormImpl.defaultProps = defaultProps$3;
+FormImpl.defaultProps = defaultProps$6;
 FormImpl.Row = FormRow;
 FormImpl.Group = FormGroup;
 FormImpl.Control = FormControl$1;
@@ -1531,7 +1657,7 @@ FormImpl.Switch = Switch;
 FormImpl.Label = FormLabel;
 FormImpl.Text = FormText;
 
-var defaultProps$4 = {
+var defaultProps$7 = {
   fluid: false
 };
 var Container = react.forwardRef(function (_ref, ref) {
@@ -1551,7 +1677,7 @@ var Container = react.forwardRef(function (_ref, ref) {
   }));
 });
 Container.displayName = 'Container';
-Container.defaultProps = defaultProps$4;
+Container.defaultProps = defaultProps$7;
 
 var NavbarBrand = react.forwardRef(function (_ref, ref) {
   var bsPrefix = _ref.bsPrefix,
@@ -1585,7 +1711,7 @@ var NavbarCollapse = react.forwardRef(function (_ref, ref) {
 });
 NavbarCollapse.displayName = 'NavbarCollapse';
 
-var defaultProps$5 = {
+var defaultProps$8 = {
   label: 'Toggle navigation'
 };
 var NavbarToggle = react.forwardRef(function (_ref, ref) {
@@ -1623,12 +1749,12 @@ var NavbarToggle = react.forwardRef(function (_ref, ref) {
   }));
 });
 NavbarToggle.displayName = 'NavbarToggle';
-NavbarToggle.defaultProps = defaultProps$5;
+NavbarToggle.defaultProps = defaultProps$8;
 
 var NavbarText = createWithBsPrefix('navbar-text', {
   Component: 'span'
 });
-var defaultProps$6 = {
+var defaultProps$9 = {
   expand: true,
   variant: 'light',
   collapseOnSelect: false
@@ -1691,7 +1817,7 @@ var Navbar = react.forwardRef(function (props, ref) {
     className: classnames(className, bsPrefix, expand && expandClass, variant && bsPrefix + "-" + variant, bg && "bg-" + bg, sticky && "sticky-" + sticky, fixed && "fixed-" + fixed)
   }), children)));
 });
-Navbar.defaultProps = defaultProps$6;
+Navbar.defaultProps = defaultProps$9;
 Navbar.displayName = 'Navbar';
 Navbar.Brand = NavbarBrand;
 Navbar.Toggle = NavbarToggle;
@@ -1699,7 +1825,7 @@ Navbar.Collapse = NavbarCollapse;
 Navbar.Text = NavbarText;
 
 var DEVICE_SIZES = ['xl', 'lg', 'md', 'sm', 'xs'];
-var defaultProps$7 = {
+var defaultProps$a = {
   noGutters: false
 };
 var Row = react.forwardRef(function (_ref, ref) {
@@ -1734,6 +1860,6 @@ var Row = react.forwardRef(function (_ref, ref) {
   }));
 });
 Row.displayName = 'Row';
-Row.defaultProps = defaultProps$7;
+Row.defaultProps = defaultProps$a;
 
-export { Button, Container, FormImpl as Form, Navbar, Row };
+export { Alert, Button, Container, FormImpl as Form, Navbar, Row };
