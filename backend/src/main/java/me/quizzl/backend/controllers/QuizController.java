@@ -2,7 +2,6 @@
 package me.quizzl.backend.controllers;
 
 import me.quizzl.backend.models.MultipleChoice;
-import me.quizzl.backend.models.Question;
 import me.quizzl.backend.models.Quiz;
 import me.quizzl.backend.requests.QuestionRequest;
 import me.quizzl.backend.services.QuizService;
