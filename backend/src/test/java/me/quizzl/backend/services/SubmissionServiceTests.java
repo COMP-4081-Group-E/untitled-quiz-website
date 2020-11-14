@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import me.quizzl.backend.models.Answer;
 import me.quizzl.backend.models.MultipleChoice;
 import me.quizzl.backend.models.Quiz;
 import me.quizzl.backend.models.Submission;
@@ -30,12 +31,15 @@ public class SubmissionServiceTests {
 
     // how do I even assign a quiz to this thing???
     var submission = new Submission();
+    submission.setQuiz(quiz);
+    submission.addAnswer(new Answer("yes"));
     submission.grade();
 
     submissionService.addSubmission(submission);
     var storedSubmission = submissionService.getSubmissions().get(0);
 
     assertNotNull(storedSubmission);
+    assertEquals(submission.getGrade(), storedSubmission.getGrade());
     assertEquals(submission.getAnswers().size(), storedSubmission.getAnswers().size());
   }
 }
