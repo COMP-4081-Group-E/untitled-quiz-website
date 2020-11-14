@@ -81,7 +81,13 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
     console.log('answers', submission);
     alert('Answers submitted!');
     // todo: send to API when submission endpoint added
-    // const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz/${id}/submission`);
+    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz/${id}/submission`, {
+      method: 'POST',
+      body: JSON.stringify({
+        quizId: id,
+        answers: submission
+      })
+    });
     // or something
   };
 

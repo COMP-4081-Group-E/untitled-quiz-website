@@ -1,6 +1,6 @@
-// class for the quizzes that will connect to a databasse
 package me.quizzl.backend.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,19 +24,19 @@ public class Quiz {
     private UUID id;
     private String quizTitle;
 
-    @OneToMany(mappedBy = "quiz")
-    private List<Question> questionList;
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> questions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "quiz")
-    private List<Submission> submissions;
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Submission> submissions = new ArrayList<>();
     
     // Constructor
     public Quiz() {
     }
-    public Quiz(List<Question> questionList, String quizTitle) {
-        this.questionList = questionList;
+    public Quiz(String quizTitle) {
         this.quizTitle = quizTitle;
     }
+
     // Getters
     public UUID getQuizId() {
         return this.id;
@@ -45,14 +45,12 @@ public class Quiz {
         return this.quizTitle;
     }
     public List<Question> getQuestions() {
-        return this.questionList;
+        return this.questions;
     }
     // Setters
-    public void setQuestions(List<Question> questionList) {
-        this.questionList = questionList;
-    }
     public void addQuestion(Question question) {
-        this.questionList.add(question);
+        this.questions.add(question);
+        question.setQuiz(this);
     }
     public void setTitle(String quizTitle) {
         this.quizTitle = quizTitle;
@@ -65,8 +63,8 @@ public class Quiz {
 
     @Override
     public String toString() {
-        for(int i = 0; i > this.questionList.size(); i++) {
-            System.out.println(this.questionList.get(i).toString());
+        for(int i = 0; i > this.questions.size(); i++) {
+            System.out.println(this.questions.get(i).toString());
         }
 
         return("Quiz ID: " + this.id);
