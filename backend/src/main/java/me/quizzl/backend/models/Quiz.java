@@ -1,4 +1,3 @@
-// class for the quizzes that will connect to a databasse
 package me.quizzl.backend.models;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class Quiz {
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Submission> submissions = new ArrayList<>();
     
     // Constructor

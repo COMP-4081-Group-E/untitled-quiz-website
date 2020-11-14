@@ -46,21 +46,26 @@ public class SubmissionController {
     }
 
     @PostMapping
-    public ResponseEntity<UUID> addSubmission(@RequestBody CreateSubmissionRequest request) {
-        var quiz = quizService.getQuizByID(request.getQuizId());
-        if (quiz.isEmpty()) {
-            return new ResponseEntity<UUID>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Double> addSubmission(@RequestBody CreateSubmissionRequest request) {
+        var possibleQuiz = quizService.getQuizByID(request.getQuizId());
+        if (possibleQuiz.isEmpty()) {
+            return new ResponseEntity<Double>(HttpStatus.BAD_REQUEST);
         }
+        var quiz = possibleQuiz.get();
 
         List<Answer> answers = request.getAnswers().values().stream()
             .map(a -> new Answer(a))
             .collect(Collectors.toList());;
         
-        var submission = new Submission(answers);
+        var submission = new Submission();
+        submission.setQuiz(quiz);
+        for (var answer : answers) {
+            submission.addAnswer(answer);
+        }
+
         submission.grade();
         submission = submissionService.addSubmission(submission);
-        
-        return new ResponseEntity<UUID>(submission.getId(), HttpStatus.CREATED);
+        return new ResponseEntity<Double>(submission.getGrade(), HttpStatus.CREATED);
     }
 
     @GetMapping
