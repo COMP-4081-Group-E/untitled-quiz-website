@@ -61,8 +61,14 @@ const TakeQuizPage = ({
   const submitAnswers = async submission => {
     console.log('answers', submission);
     alert('Answers submitted!'); // todo: send to API when submission endpoint added
-    // const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz/${id}/submission`);
-    // or something
+
+    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz/${id}/submission`, {
+      method: 'POST',
+      body: JSON.stringify({
+        quizId: id,
+        answers: submission
+      })
+    }); // or something
   };
 
   if (quiz == null && !loading) {
