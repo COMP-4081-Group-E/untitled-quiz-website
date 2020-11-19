@@ -8,58 +8,33 @@ import { Button, Form } from 'react-bootstrap';
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
-const loadQuiz = async (id: any): Promise<LocalQuiz | null> => {
-  if (id == 1) {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    return {
-      title: 'A sample quiz',
-      questions: [
-        {
-          key: 0,
-          question: 'Which of the following statements is not a loop?',
-          // todo: send client array of answers so cheating isn't easy
-          answers: shuffle([
-            'goto',
-            'for',
-            'do',
-            'while'
-          ])
-        },
-        {
-          key: 1,
-          question: 'What does CPU stand for?',
-          // todo: send client array of answers so cheating isn't easy
-          answers: shuffle([
-            'Central processing unit',
-            'Central programming unit',
-            'Controlled progress unit',
-            'Creative process unit'
-          ])
-        },
-      ]
-    };
-  }
-
+const loadQuiz = async (id: any): Promise<LoadedQuiz | null> => {
   const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz/${id}`);
   if (!res.ok) {
     return null;
   }
-  // todo: check what the API returns and make sure we can just say it's a Quiz
-  // also, we should shuffle the answers before returning the quiz
-  return await res.json() as LocalQuiz;
+
+  return await res.json() as LoadedQuiz;
 };
 
-interface LocalQuiz {
-  title: string,
-  questions: {
-    key: any,
-    question: string,
-    answers: string[]
-  }[]
+interface QuizDetails {
+  quizId: string,
+  quizTitle: string
+}
+interface QuestionPrompt {
+  question: string,
+  answers: string[]
 }
 interface Submission {
   [id: number]: string
 }
+type LoadedQuiz = QuizDetails & {
+  questions: {
+    question: string,
+    correctAnswer: string,
+    incorrect: string[]
+  }[]
+};
 
 interface TakeQuizPageProps {
   id: any
@@ -67,31 +42,43 @@ interface TakeQuizPageProps {
 
 const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
   const { register, handleSubmit } = useForm<Submission>();
-  const [quiz, setQuiz] = useState<LocalQuiz | null>(null);
+  const [quizDetails, setQuizDetails] = useState<QuizDetails | null>(null);
+  const [questions, setQuestions] = useState<QuestionPrompt[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     loadQuiz(id).then(loadedQuiz => {
-      setQuiz(loadedQuiz);
+      setQuizDetails({
+        quizId: loadedQuiz!.quizId,
+        quizTitle: loadedQuiz!.quizTitle
+      });
+      setQuestions(loadedQuiz!.questions.map(q => ({
+        question: q.question,
+        answers: shuffle([q.correctAnswer, ...q.incorrect])
+      })));
       setLoading(false);
     });
   }, []);
 
   const submitAnswers = async (submission: Submission) => {
     console.log('answers', submission);
-    alert('Answers submitted!');
-    // todo: send to API when submission endpoint added
-    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz/${id}/submission`, {
+    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}api/submission`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         quizId: id,
         answers: submission
       })
     });
-    // or something
+
+    const grade = Number(await res.text());
+    alert(`Answers submitted! You got ${grade * 100}% correct!`);
+    window.location.href = '/';
   };
 
-  if (quiz == null && !loading) {
+  if (quizDetails == null && !loading) {
     return (
       <MainLayout>
         <h1>Sorry!</h1>
@@ -102,7 +89,7 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
 
   return (
     <MainLayout>
-      <h1>{!loading ? quiz!.title : <Skeleton />}</h1>
+      <h1>{!loading ? quizDetails!.quizTitle : <Skeleton />}</h1>
       <Form onSubmit={handleSubmit(submitAnswers)}>
         {loading ? (<>
           <QuestionResponse loading={loading} />
@@ -110,7 +97,7 @@ const TakeQuizPage: React.FunctionComponent<TakeQuizPageProps> = ({ id }) => {
           <QuestionResponse loading={loading} />
           <QuestionResponse loading={loading} />
           <QuestionResponse loading={loading} />
-        </>) : quiz!.questions.map(({ key, question, answers }) => (
+        </>) : questions.map(({ question, answers }, key) => (
           <QuestionResponse loading={loading} id={key} title={question} answers={answers} ref={register} key={key} />
         ))}
         <Button type='submit'>Submit Answers</Button>
