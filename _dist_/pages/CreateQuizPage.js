@@ -23,8 +23,11 @@ const CreateQuizPage = () => {
   };
 
   const createQuiz = async () => {
-    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz`, {
+    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}api/quiz`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         title,
         questions
@@ -36,14 +39,15 @@ const CreateQuizPage = () => {
       return;
     }
 
+    setTitle('');
     setQuestions([]);
-    const id = await res.text;
-    setLink(`${window.location.protocol}//${window.location.hostname}/quiz/${id}`); // todo: probably don't use an alert for this in the future
-
-    alert('Quiz created!');
+    const id = await res.json();
+    setLink(`${window.location.protocol}//${window.location.hostname}/quiz/${id}`);
   };
 
-  return /*#__PURE__*/React.createElement(MainLayout, null, link && /*#__PURE__*/React.createElement(Alert, null, " Quiz at: ", link), /*#__PURE__*/React.createElement("h1", null, "Create a Quiz"), /*#__PURE__*/React.createElement("label", null, "Quiz Title:", /*#__PURE__*/React.createElement("input", {
+  return /*#__PURE__*/React.createElement(MainLayout, null, link && /*#__PURE__*/React.createElement(Alert, {
+    variant: "success"
+  }, "Quiz at: ", link), /*#__PURE__*/React.createElement("h1", null, "Create a Quiz"), /*#__PURE__*/React.createElement("label", null, "Quiz Title:", /*#__PURE__*/React.createElement("input", {
     type: "text",
     onChange: updateTitle
   })), /*#__PURE__*/React.createElement(QuestionForm, {

@@ -13,31 +13,11 @@ const {
 } = import.meta.env;
 
 const loadQuiz = async id => {
-  if (id == 1) {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    return {
-      title: 'A sample quiz',
-      questions: [{
-        key: 0,
-        question: 'Which of the following statements is not a loop?',
-        // todo: send client array of answers so cheating isn't easy
-        answers: shuffle(['goto', 'for', 'do', 'while'])
-      }, {
-        key: 1,
-        question: 'What does CPU stand for?',
-        // todo: send client array of answers so cheating isn't easy
-        answers: shuffle(['Central processing unit', 'Central programming unit', 'Controlled progress unit', 'Creative process unit'])
-      }]
-    };
-  }
-
   const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz/${id}`);
 
   if (!res.ok) {
     return null;
-  } // todo: check what the API returns and make sure we can just say it's a Quiz
-  // also, we should shuffle the answers before returning the quiz
-
+  }
 
   return await res.json();
 };
@@ -49,33 +29,45 @@ const TakeQuizPage = ({
     register,
     handleSubmit
   } = useForm();
-  const [quiz, setQuiz] = useState(null);
+  const [quizDetails, setQuizDetails] = useState(null);
+  const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     loadQuiz(id).then(loadedQuiz => {
-      setQuiz(loadedQuiz);
+      setQuizDetails({
+        quizId: loadedQuiz.quizId,
+        quizTitle: loadedQuiz.quizTitle
+      });
+      setQuestions(loadedQuiz.questions.map(q => ({
+        question: q.question,
+        answers: shuffle([q.correctAnswer, ...q.incorrect])
+      })));
       setLoading(false);
     });
   }, []);
 
   const submitAnswers = async submission => {
     console.log('answers', submission);
-    alert('Answers submitted!'); // todo: send to API when submission endpoint added
-
-    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz/${id}/submission`, {
+    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}api/submission`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         quizId: id,
         answers: submission
       })
-    }); // or something
+    });
+    const grade = Number(await res.text());
+    alert(`Answers submitted! You got ${grade * 100}% correct!`);
+    window.location.href = '/';
   };
 
-  if (quiz == null && !loading) {
+  if (quizDetails == null && !loading) {
     return /*#__PURE__*/React.createElement(MainLayout, null, /*#__PURE__*/React.createElement("h1", null, "Sorry!"), /*#__PURE__*/React.createElement("p", null, "The quiz you asked for couldn't be found :("));
   }
 
-  return /*#__PURE__*/React.createElement(MainLayout, null, /*#__PURE__*/React.createElement("h1", null, !loading ? quiz.title : /*#__PURE__*/React.createElement(Skeleton, null)), /*#__PURE__*/React.createElement(Form, {
+  return /*#__PURE__*/React.createElement(MainLayout, null, /*#__PURE__*/React.createElement("h1", null, !loading ? quizDetails.quizTitle : /*#__PURE__*/React.createElement(Skeleton, null)), /*#__PURE__*/React.createElement(Form, {
     onSubmit: handleSubmit(submitAnswers)
   }, loading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(QuestionResponse, {
     loading: loading
@@ -87,11 +79,10 @@ const TakeQuizPage = ({
     loading: loading
   }), /*#__PURE__*/React.createElement(QuestionResponse, {
     loading: loading
-  })) : quiz.questions.map(({
-    key,
+  })) : questions.map(({
     question,
     answers
-  }) => /*#__PURE__*/React.createElement(QuestionResponse, {
+  }, key) => /*#__PURE__*/React.createElement(QuestionResponse, {
     loading: loading,
     id: key,
     title: question,
