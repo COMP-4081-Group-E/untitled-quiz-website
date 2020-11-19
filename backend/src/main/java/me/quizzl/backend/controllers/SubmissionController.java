@@ -33,6 +33,7 @@ class CreateSubmissionRequest {
     }
 }
 
+@CrossOrigin
 @RequestMapping("api/submission")
 @RestController
 public class SubmissionController {

@@ -31,6 +31,7 @@ class CreateQuizRequest {
     }
 }
 
+@CrossOrigin
 @RequestMapping("api/quiz")
 @RestController
 public class QuizController {

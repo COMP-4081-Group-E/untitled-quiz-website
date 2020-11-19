@@ -1,10 +1,8 @@
 import React, { useState } from "react"
 import type { Question } from "../models/question";
-import Footer from "../Components/Footer";
 import QuestionForm from "../Components/QuestionForm";
 import MainLayout from "../Components/MainLayout";
 import { Alert, Button } from 'react-bootstrap';
-
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
@@ -21,8 +19,11 @@ const CreateQuizPage = () => {
   };
 
   const createQuiz = async () => {
-    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}/api/quiz`, {
+    const res = await fetch(`${SNOWPACK_PUBLIC_API_URL}api/quiz`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ title, questions })
     });
 
@@ -31,18 +32,16 @@ const CreateQuizPage = () => {
       return;
     }
 
-
+    setTitle('');
     setQuestions([]);
-    const id = await res.text;
+    const id = await res.json() as string;
     setLink(`${window.location.protocol}//${window.location.hostname}/quiz/${id}`);
-    // todo: probably don't use an alert for this in the future
-    alert('Quiz created!');
   };
 
   return (
     <MainLayout>
       {link && (
-        <Alert> Quiz at: {link}</Alert>
+        <Alert variant='success'>Quiz at: {link}</Alert>
       )}
       <h1>Create a Quiz</h1>
       <label>
